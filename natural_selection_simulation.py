@@ -83,21 +83,30 @@ class Bot:
       history_x = [y] + history_x
       history_y = [x] + history_y
 
+#initial_species = [Bot([0, 1, 0])]
+initial_species = [Bot(0)] # Initially the whole population
+pool_size = 100 # Total numbers of strategies
+tournament_length = 500 # How many matches each round of selection will run
+threshold = 80 # How many strategies will survive each round
+mutation_rate = 0.1 # Mutation rate
 
 pool = []
-initial_species = [Bot([0, 1, 0])]
-for i in range(100):
-  pool.append(copy.deepcopy(random.choice(initial_species)))
+for i in range(pool_size):
+  pool.append(copy.deepcopy(random.choice(initial_species))) # Initialization
+
 while 1:
   for i in range(len(pool)):
     pool[i].score = 0
-  for i in range(500):
+  for i in range(tournament_length):
     pool[random.randint(0,
                         len(pool) - 1)].fight(pool[random.randint(
                           0,
                           len(pool) - 1)])
   pool.sort(key=lambda x: x.score)
-  print(Counter(list(map(lambda x: str(x.strategy), pool))).most_common(1))
-  pool = pool[50:]
-  for i in range(50):
-    pool.append(copy.deepcopy(pool[random.randint(0, len(pool) - 1)].mutate()))
+  print(Counter(list(map(lambda x: str(x.strategy), pool))).most_common(3))
+  pool = pool[threshold:]
+  for i in range(threshold):
+    if random.random() < mutation_rate:
+      pool.append(copy.deepcopy(pool[random.randint(0, len(pool) - 1)].mutate()))
+    else:
+      pool.append(copy.deepcopy(pool[random.randint(0, len(pool) - 1)]))
