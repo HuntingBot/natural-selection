@@ -62,8 +62,7 @@ class Bot:
     return x
 
   def mutate(self):
-    if random.random() > 0.8: return Bot(mutate(self.strategy))
-    else: return self
+    return Bot(mutate(self.strategy))
 
   def fight(self, opponent):
     history_x, history_y = [], []
@@ -88,7 +87,7 @@ initial_species = [Bot(0)] # Initially the whole population
 pool_size = 100 # Total numbers of strategies
 tournament_length = 500 # How many matches each round of selection will run
 threshold = 80 # How many strategies will survive each round
-mutation_rate = 0.1 # Mutation rate
+mutation_rate = 0.01 # Mutation rate
 
 pool = []
 for i in range(pool_size):
