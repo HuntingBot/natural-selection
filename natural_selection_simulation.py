@@ -21,6 +21,9 @@ Game rule: Modified Prisoner's Dilemma
 import random, copy
 from collections import Counter
 
+mutate1 = 25
+mutate2 = 25
+mutate3 = 25
 
 def mutate(asdf):
   if isinstance(asdf, int):
@@ -30,10 +33,11 @@ def mutate(asdf):
        random.choice([0, 1]),
        random.choice([0, 1])]
     ])
-  x = random.randint(0, 3)
-  if x == 0: return [mutate(asdf[0]), asdf[1], asdf[2]]
-  elif x == 1: return [asdf[0], mutate(asdf[1]), asdf[2]]
-  elif x == 2: return [asdf[0], asdf[1], mutate(asdf[2])]
+  x = random.randint(0, 100)
+  if x <= mutate1: return [mutate(asdf[0]), asdf[1], asdf[2]]
+  elif x <= mutate1 + mutate2: return [asdf[0], mutate(asdf[1]), asdf[2]]
+  elif x == mutate1 + mutate2 + mutate3: return [asdf[0], asdf[1], random.choice([
+      0, 1])]
   else:
     return random.choice([
       0, 1,
@@ -82,7 +86,7 @@ class Bot:
       history_x = [y] + history_x
       history_y = [x] + history_y
 
-#initial_species = [Bot([0, 1, 0])]
+#initial_species = [Bot([0, 1, 0]), Bot([0, [0, 1, 0], 1])]
 initial_species = [Bot(0)] # Initially the whole population
 pool_size = 100 # Total numbers of strategies
 tournament_length = 500 # How many matches each round of selection will run
